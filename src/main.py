@@ -2,18 +2,13 @@
 FastAPI application entry point.
 """
 
-from typing import Annotated
-
-from fastapi import Depends, FastAPI
-from sqlalchemy import select, text
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import FastAPI
 
 from src.config import settings
-from src.database import get_db
 
 app = FastAPI(
-    title="FastAPI Template",
-    description="A production-ready FastAPI template",
+    title="Shopifake Chatbot",
+    description="Shopifake chatbot service",
     version="1.0.0",
 )
 
@@ -30,25 +25,14 @@ async def read_root():
 
 
 @app.get("/health")
-async def health_check(db: Annotated[AsyncSession, Depends(get_db)]):
+async def health_check():
     """
-    Health check endpoint with database connectivity check.
-
-    Args:
-        db: Database session
+    Health check endpoint.
 
     Returns:
         dict: Service health status
     """
-    try:
-        # Check database connectivity
-        await db.execute(select(text("1")))
-        db_status = "connected"
-    except Exception:
-        db_status = "disconnected"
-
     return {
         "status": "healthy",
-        "database": db_status,
         "environment": settings.ENVIRONMENT,
     }
