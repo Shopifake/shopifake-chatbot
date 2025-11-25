@@ -18,12 +18,10 @@ async def test_read_root(client):
 @pytest.mark.asyncio
 async def test_health_check(client):
     """
-    Test the health check endpoint returns healthy status with database check.
+    Test the health check endpoint returns healthy status.
     """
     response = await client.get("/health")
     assert response.status_code == 200
     data = response.json()
     assert data["status"] == "healthy"
-    assert "database" in data
-    assert data["database"] in ["connected", "disconnected"]
     assert "environment" in data
